@@ -100,31 +100,7 @@ export default function AdminIssuesPage() {
               )}
             </tbody>
 
-            {/* Dummy  */}
-            <tbody>
-              Dummy |
-              <UserRow
-                name="Login system bug"
-                email="high"
-                status="active"
-                games="Dev Team A"
-                joinDate="2024-01-15"
-              />
-              <UserRow
-                name="Payment gateway error"
-                email="critical"
-                status="inactive"
-                games="Dev Team B"
-                joinDate="2024-02-20"
-              />
-              <UserRow
-                name="UI improvement request"
-                email="low"
-                status="banned"
-                games="Design Team"
-                joinDate="2024-03-10"
-              />
-            </tbody>
+           
           </table>
         </div>
       </div>

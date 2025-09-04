@@ -104,7 +104,7 @@ export default function LoginPage() {
         <div className="mb-8 absolute top-5 left-5">
           <Image src={Logo} alt="Big Time Logo" width={96} />
         </div>
-        <h1 className="font-bebas-neue font-medium text-[96px] text-white leading-tight">BIG TIME</h1>
+        <h1 className="font-bebas-neue font-medium text-[96px] text-white leading-tight">Terminal System</h1>
         <div className="font-poppins leading-none">
           <p className="text-[25px] md:text-[40px] text-white uppercase">Sign in to your</p>
           <p className="text-[25px] md:text-[40px] uppercase bg-gradient-to-r from-[#BA83CB] to-[#AE69FF] bg-clip-text text-transparent">
