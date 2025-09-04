@@ -238,7 +238,6 @@ export default function LoginPage() {
           </form>
 
           <div className="mt-6 text-center text-gray-300 text-sm border-t pt-3 border-[#727272]">
-            {/* Don’t have an account? <Link href="/signup" className="text-[#9D5CE9]">Sign up</Link> */}
           </div>
 
             {/* <div className="mt-3">
