@@ -3,7 +3,7 @@ import { Settings, Search, Bell } from "lucide-react"
 export default function AdminHome() {
   return (
     <>
-      <div className="grid grid-cols-4 gap-4 pt-20 px-20 space-y-4">
+      <div className="grid grid-cols-4 gap-4 pt-20 px-20 mb-4">
         <div className="stat-card text-center bg-[#240b48b6] rounded-2xl border border-[#210C43] p-5">
           <div className="inline-block rounded-xl bg-[#A855F7] p-3">
             <svg
@@ -190,26 +190,46 @@ export default function AdminHome() {
           </div>
         </div>
         <div className="bg-[#240b48b6] border border-[#A855F74D] text-white py-6 px-4 rounded-xl shadow-xl">
-          <h2 className="font-semibold text-white my-2">Recent Activity</h2>
-          <div className="bg-purple-900 p-4 rounded-lg mb-2 flex items-center gap-3">
-            <div className="bg-[#A855F7] rounded-full h-2 w-2"></div>
-            New user registered
-            <span className="text-white opacity-45"> 2 min ago</span>
+          <h2 className="font-semibold text-white my-2">System Status</h2>
+          <div className="bg-purple-900 p-4 rounded-lg mb-2 flex items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <div className="bg-[#A855F7] rounded-full h-2 w-2"></div>
+              Game Server
+            </div>
+            <div className="flex items-center justify-center gap-2 mr-20">
+              99.7%
+              <div className="bg-[#A855F7] rounded-full h-2 w-2"></div>
+            </div>
           </div>
-          <div className="bg-purple-900 p-4 rounded-lg mb-2 flex items-center gap-3">
-            <div className="bg-[#A855F7] rounded-full h-2 w-2"></div>
-            Prize awarded to player
-            <span className="text-white opacity-45"> 2 min ago</span>
+          <div className="bg-purple-900 p-4 rounded-lg mb-2 flex items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <div className="bg-[#A855F7] rounded-full h-2 w-2"></div>
+              Payment Gateway
+            </div>
+            <div className="flex items-center justify-center gap-2 mr-20">
+              98.7%
+              <div className="bg-[#A855F7] rounded-full h-2 w-2"></div>
+            </div>
           </div>
-          <div className="bg-purple-900 p-4 rounded-lg mb-2 flex items-center gap-3">
-            <div className="bg-[#A855F7] rounded-full h-2 w-2"></div>
-            Game completed
-            <span className="text-white opacity-45"> 2 min ago</span>
+          <div className="bg-purple-900 p-4 rounded-lg mb-2 flex items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <div className="bg-[#22C55E] rounded-full h-2 w-2"></div>
+              Database
+            </div>
+            <div className="flex items-center justify-center gap-2 mr-20">
+              99.2%
+              <div className="bg-[#22C55E] rounded-full h-2 w-2"></div>
+            </div>
           </div>
-          <div className="bg-purple-900 p-4 rounded-lg mb-2 flex items-center gap-3">
-            <div className="bg-[#A855F7] rounded-full h-2 w-2"></div>
-            Payment processed
-            <span className="text-white opacity-45"> 2 min ago</span>
+          <div className="bg-purple-900 p-4 rounded-lg mb-2 flex items-cetner justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <div className="bg-[#22C55E] rounded-full h-2 w-2"></div>
+              CDN
+            </div>
+            <div className="flex items-center justify-center gap-2 mr-20">
+              99.5%
+              <div className="bg-[#22C55E] rounded-full h-2 w-2"></div>
+            </div>
           </div>
         </div>
       </div>
