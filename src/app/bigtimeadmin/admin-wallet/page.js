@@ -118,7 +118,7 @@ export default function TokenWalletPage() {
     //   return
     // }
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/add-user-token")
+      const res = await fetch("https://snurr.casino/api/add-user-token")
       const data = await res.json()
       console.log("🚀 ~ handleExternalTransfer ~ data:", data)
       toast("Tokens transferred successfully!")

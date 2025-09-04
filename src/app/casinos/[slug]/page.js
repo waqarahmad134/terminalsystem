@@ -72,7 +72,7 @@ export default function Homes({ params }) {
     setLoading(true)
     try {
       const response = await fetch(
-        "http://127.0.0.1:8000/api/login",
+        "https://snurr.casino/api/login",
         {
           method: "POST",
           headers: {
@@ -83,6 +83,7 @@ export default function Homes({ params }) {
       )
 
       const data = await response.json()
+      console.log("🚀 ~ handleLogin ~ data:", data)
 
       if (response.ok) {
         toast.success("Logged in successfully!")
