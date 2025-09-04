@@ -11,14 +11,6 @@ const nextConfig = {
       },
     ],
   },
-  async rewrites() {
-    return [
-      {
-        source: "/api/:path*",                  // frontend request
-        destination: "http://167.71.255.240:8000/:path*", // backend (HTTP)
-      },
-    ]
-  },
 }
 
 export default nextConfig
