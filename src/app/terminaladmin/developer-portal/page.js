@@ -44,7 +44,7 @@ const AllGames = () => {
                 .toLowerCase()
                 .replace(/\s+/g, "-")
                 .replace(/[^a-z0-9\-]/g, "")
-              router.push(`/casinos/${slug}`)
+              router.push(`/terminaladmin/casinos/${slug}`)
             }}
           >
             <div className="relative rounded-t-lg overflow-hidden">
