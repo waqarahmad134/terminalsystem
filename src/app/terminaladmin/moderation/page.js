@@ -15,7 +15,7 @@ export default function AdminModerationPage() {
       toast.error(
         error?.response?.data?.detail ||
           error.message ||
-          "Failed to fetch flagged reports.",
+          "Failed to fetch flagged reports."
       )
     }
   }
@@ -24,13 +24,30 @@ export default function AdminModerationPage() {
     fetchFlaggedReports()
   }, [])
 
+  const handleAction = (index, action) => {
+    // Optimistic UI update: remove entry from list
+    const updatedFlags = [...flags]
+    const removed = updatedFlags.splice(index, 1)[0]
+    setFlags(updatedFlags)
+
+    // Toast feedback
+    toast.success(
+      `${action === "approve" ? "Approved" : "Rejected"}: ${
+        removed.game_title || "Game"
+      }`
+    )
+
+    // 🔹 Optionally, you can also hit API here to persist action:
+    // await postApi(`/reports/flags/${removed.id}/${action}/`)
+  }
+
   return (
     <div className="p-8">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold">Flagged Games Queue</h1>
-        <button className="bg-[#7A59FF] px-4 py-2 rounded border border-[#7A59FF] hover:bg-transparent">
+        {/* <button className="bg-[#7A59FF] px-4 py-2 rounded border border-[#7A59FF] hover:bg-transparent">
           All Severities
-        </button>
+        </button> */}
       </div>
 
       <div className="space-y-3">
@@ -56,8 +73,16 @@ export default function AdminModerationPage() {
                 </p>
               </div>
               <div className="flex gap-4">
-                <ThemeBtn title="Approve" bgColor="bg-[#16A34A]" />
-                <ThemeBtn title="Reject" bgColor="bg-[#DC2626]" />
+                <ThemeBtn
+                  title="Approve"
+                  bgColor="bg-[#16A34A]"
+                  onClick={() => handleAction(index, "approve")}
+                />
+                <ThemeBtn
+                  title="Reject"
+                  bgColor="bg-[#DC2626]"
+                  onClick={() => handleAction(index, "reject")}
+                />
               </div>
             </div>
           ))
@@ -68,7 +93,6 @@ export default function AdminModerationPage() {
             </p>
           </div>
         )}
-        
       </div>
     </div>
   )

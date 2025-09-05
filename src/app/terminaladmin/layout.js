@@ -3,6 +3,19 @@
 import Link from "next/link"
 import Image from "next/image"
 import bgImage from "@/assets/Images/BackgroundImage.png"
+import { LogOut } from "lucide-react"
+
+const logOutFunc = async () => {
+  try {
+    localStorage.removeItem("accessToken")
+    localStorage.removeItem("refreshToken")
+    localStorage.removeItem("role")
+    window.location.href = "/login"
+  } catch (err) {
+    toast.error("Something went wrong")
+    console.error("❌ Logout error:", err)
+  }
+}
 
 export default function AdminLayout({ children }) {
   return (
@@ -57,6 +70,7 @@ export default function AdminLayout({ children }) {
             >
               Content
             </Link>
+
             {/* <Link
               href="/terminaladmin/rewards"
               className="block py-2 px-4 hover:bg-gray-700 rounded mb-2"
@@ -74,6 +88,14 @@ export default function AdminLayout({ children }) {
               className="block py-2 px-4 hover:bg-gray-700 rounded"
             >
               Wallet
+            </Link>
+
+            <Link
+              href="#"
+              onClick={logOutFunc}
+              className="block py-2 px-4 hover:bg-gray-700 rounded mb-2"
+            >
+              Logout
             </Link>
           </nav>
         </div>

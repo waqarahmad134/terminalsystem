@@ -22,7 +22,7 @@ function AdminLink() {
 
   return (
     <Link
-      href="/bigtimeadmin"
+      href="/terminaladmin"
       className="w-8 h-8 p-5 bg-[#4c2d80] rounded flex items-center justify-center hover:bg-[#5d37a2]"
     >
       <span className="text-white">
@@ -145,7 +145,7 @@ export default function RootHeader() {
         </div>
 
         <div className="ml-5">
-          <button onClick={() => navigateWithLoading("/newhome")}>
+          <button onClick={() => navigateWithLoading("/terminaladmin")}>
             <Image src={Logo} alt="Big Time Logo" width={42} />
           </button>
         </div>

@@ -12,12 +12,12 @@ export default function LayoutWrapper({ children }) {
 
   const excludedPrefixes = ["/", "/login", "/otp", "/signup"]
   const isExcluded =
-    excludedPrefixes.includes(pathname) || pathname.startsWith("/bigtimeadmin")
+    excludedPrefixes.includes(pathname) || pathname.startsWith("/terminaladmin")
 
   useEffect(() => {
     const role = localStorage.getItem("role")
     if (pathname === "/home" && role === "admin") {
-      router.replace("/newhome")
+      router.replace("/terminaladmin")
     }
 
   }, [pathname, router])
