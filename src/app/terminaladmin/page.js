@@ -101,7 +101,7 @@ export default function AdminHome() {
           </div>
           <div>
             <h3 className="text-sm text-gray-400">Revenue</h3>
-            <p className="text-2xl font-bold">120 BTX</p>
+            <p className="text-2xl font-bold">120</p>
             <p className="text-sm text-green-400">+12%</p>
           </div>
         </div>

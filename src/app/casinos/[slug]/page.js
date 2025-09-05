@@ -24,7 +24,7 @@ export default function Homes({ params }) {
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
 
-  const gameLink = "http://thebigtimeuniverse.com/"
+  const gameLink = "http://terminalsystem.online/"
   const tabs = ["About"]
   const [formData, setFormData] = useState({
     email: "",
@@ -59,7 +59,7 @@ export default function Homes({ params }) {
 
   const fetchGames = async () => {
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/allgames")
+      const res = await fetch("https://snurr.casino/api/allgames")
       const data = await res.json()
       setGames(data?.data)
     } catch (err) {
@@ -146,7 +146,7 @@ export default function Homes({ params }) {
       />
       <div className="max-w-[1700px] mx-auto text-white p-6">
         <button
-          onClick={() => router.push("/newhome")}
+          onClick={() => router.push("/terminaladmin")}
           className="cursor-pointer bg-[#301852] rounded-xl px-3 py-2 text-white flex items-center justify-center gap-1"
         >
           <svg
@@ -543,7 +543,7 @@ export default function Homes({ params }) {
                     <div>
                       <Image
                         key={index}
-                        src={`http://localhost/games-banner/${game?.base_image}`}
+                        src={`https://snurr.casino/games-banner/${game?.base_image}`}
                         className="rounded-lg object-cover hover:scale-95 transition-transform duration-300"
                         width={300}
                         height={230}

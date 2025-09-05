@@ -30,7 +30,7 @@ export default function LoginPage() {
     const rememberedEmail = localStorage.getItem("rememberedEmail");
 
     if (token) {
-      router.push("/newhome");
+      router.push("/terminaladmin");
     }
 
     if (rememberedEmail) {
@@ -67,7 +67,7 @@ export default function LoginPage() {
         } else {
           localStorage.removeItem("rememberedEmail");
         }
-        router.push("/bigtimeadmin");
+        router.push("/terminaladmin");
        
       } else {
         toast.error(data?.message || "Invalid credentials");

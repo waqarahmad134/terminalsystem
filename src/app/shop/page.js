@@ -39,7 +39,7 @@ export default function Shop() {
                   whileTap={{ scale: 0.95 }}
                   className="px-6 py-2 bg-[#7A59FF] hover:bg-[#6c4fe0] rounded-md transition-colors duration-200"
                 >
-                  Buy BTX
+                  Buy 
                 </motion.button>
               </div>
             </div>

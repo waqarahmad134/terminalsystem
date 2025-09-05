@@ -28,49 +28,49 @@ export default function AdminLayout({ children }) {
           <h2 className="text-xl font-bold mb-6">Admin Panel</h2>
           <nav>
             <Link
-              href="/bigtimeadmin"
+              href="/terminaladmin"
               className="block py-2 px-4 bg-purple-900 rounded mb-2"
             >
               Dashboard
             </Link>
             <Link
-              href="/bigtimeadmin/users"
+              href="/terminaladmin/users"
               className="block py-2 px-4 hover:bg-gray-700 rounded mb-2"
             >
               Users
             </Link>
             <Link
-              href="/bigtimeadmin/moderation"
+              href="/terminaladmin/moderation"
               className="block py-2 px-4 hover:bg-gray-700 rounded mb-2"
             >
               Moderation
             </Link>
             <Link
-              href="/bigtimeadmin/issues"
+              href="/terminaladmin/issues"
               className="block py-2 px-4 hover:bg-gray-700 rounded mb-2"
             >
               Issues
             </Link>
             <Link
-              href="/bigtimeadmin/content"
+              href="/terminaladmin/content"
               className="block py-2 px-4 hover:bg-gray-700 rounded mb-2"
             >
               Content
             </Link>
             {/* <Link
-              href="/bigtimeadmin/rewards"
+              href="/terminaladmin/rewards"
               className="block py-2 px-4 hover:bg-gray-700 rounded mb-2"
             >
               Rewards & Achievements
             </Link> */}
             <Link
-              href="/bigtimeadmin/developer-portal"
+              href="/terminaladmin/developer-portal"
               className="block py-2 px-4 hover:bg-gray-700 rounded"
             >
               Casino Integration
             </Link>
             <Link
-              href="/bigtimeadmin/admin-wallet"
+              href="/terminaladmin/admin-wallet"
               className="block py-2 px-4 hover:bg-gray-700 rounded"
             >
               Wallet

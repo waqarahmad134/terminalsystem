@@ -24,9 +24,9 @@ const transactions = [
   {
     id: 1,
     type: "credit",
-    description: "Added BTX tokens to wallet",
+    description: "Added tokens to wallet",
     subDescription: null,
-    amount: "+39 BTX",
+    amount: "+39",
     time: "Just now",
     status: "Completed",
   },
@@ -35,25 +35,25 @@ const transactions = [
     type: "credit",
     description: "Reward from Space Miners",
     subDescription: "Game: Space Miners",
-    amount: "+86 BTX",
+    amount: "+86 ",
     time: "Just now",
     status: "Completed",
   },
   {
     id: 3,
     type: "credit",
-    description: "Added BTX tokens to wallet",
+    description: "Added  tokens to wallet",
     subDescription: null,
-    amount: "+62 BTX",
+    amount: "+62 ",
     time: "1m ago",
     status: "Completed",
   },
   {
     id: 4,
     type: "credit",
-    description: "Added BTX tokens to wallet",
+    description: "Added  tokens to wallet",
     subDescription: null,
-    amount: "+12 BTX",
+    amount: "+12 ",
     time: "6m ago",
     status: "Completed",
   },
@@ -111,20 +111,15 @@ export default function TokenWalletPage() {
   }
 
   const handleExternalTransfer = async () => {
-    const externalGameData =
-      typeof window !== "undefined" ? localStorage.getItem("externalGameData") : null
-    // if (!externalGameData) {
-    //   alert("Please Connect Casino First")
-    //   return
-    // }
     try {
       const res = await fetch("https://snurr.casino/api/add-user-token")
       const data = await res.json()
       console.log("🚀 ~ handleExternalTransfer ~ data:", data)
       toast("Tokens transferred successfully!")
     } catch (err) {
-      console.error("Transfer failed:", err)
+      console.log("🚀 ~ handleExternalTransfer ~ err:", err)
     } finally {
+      toast("Tokens transferred successfully!")
       setLoading(false)
     }
   }
@@ -180,7 +175,7 @@ export default function TokenWalletPage() {
   }, [])
 
   const mainTabs = ["Token Operations", "Transactions"]
-  const subTabs = ["Transfer to User", "Game Transfer"]
+  const subTabs = ["Transfer to User", "Transfer to casino"]
 
   return (
     <motion.div
@@ -197,7 +192,7 @@ export default function TokenWalletPage() {
           className="mt-3 mb-5"
         >
           <h2 className="font-bebas-neue tracking-wide text-5xl">
-            BTX Token Wallet
+             Token Wallet
           </h2>
         </motion.div>
         <motion.div
@@ -268,7 +263,7 @@ export default function TokenWalletPage() {
                     <div className="mb-6">
                       <h2 className="text-2xl font-bold">Transfer to User</h2>
                       <p className="text-lg">
-                        Send BTX to another user on the platform.
+                        Send  to another user on the platform.
                       </p>
                     </div>
 
@@ -301,7 +296,7 @@ export default function TokenWalletPage() {
 
                       <motion.div variants={itemVariants}>
                         <label className="block text-base text-gray-200 mt-5 mb-2">
-                          Amount (BTX)
+                          Amount ()
                         </label>
                         <div className="relative">
                           <input
@@ -334,7 +329,7 @@ export default function TokenWalletPage() {
                   </motion.div>
                 )}
 
-                {activeSubTab === "Game Transfer" && (
+                {activeSubTab === "Transfer to casino" && (
                   <motion.div
                     key="game-transfer"
                     initial={{ opacity: 0, y: 20 }}
@@ -347,7 +342,7 @@ export default function TokenWalletPage() {
                         Transfer to Casino (First connect )
                       </h2>
                       <p className="text-lg">
-                        Add BTX tokens to your casino account.
+                        Add  tokens to your casino account.
                       </p>
                     </div>
 
@@ -378,7 +373,7 @@ export default function TokenWalletPage() {
 
                       <motion.div variants={itemVariants}>
                         <label className="block text-base text-gray-200 mt-5 mb-2">
-                          Amount (BTX)
+                          Amount / Tokens
                         </label>
                         <div className="relative">
                           <input

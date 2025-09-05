@@ -152,7 +152,7 @@ export default function Homes() {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => router.push("/newhome")}
+            onClick={() => router.push("/terminaladmin")}
             className="absolute top-3 z-10 left-3 cursor-pointer bg-[#301852] rounded-xl px-3 py-2 text-white flex items-center justify-center gap-1"
           >
             <svg

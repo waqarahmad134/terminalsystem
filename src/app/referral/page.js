@@ -247,7 +247,7 @@ export default function Leaderboard() {
             <div className="flex-1 flex items-center bg-[#2C1A52] rounded-md px-4 py-2 border border-purple-700">
               <input
                 ref={inputRef}
-                value={`http://thebigtimeuniverse.com/signup/${refCode || referralCode}`}
+                value={`http://terminalsystem.online/signup/${refCode || referralCode}`}
                 className="bg-transparent text-white text-sm flex-1 outline-none"
               />
               <motion.button

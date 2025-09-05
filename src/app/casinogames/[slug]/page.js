@@ -139,7 +139,7 @@ export default function Homes({ params }) {
       />
       <div className="max-w-[1700px] text-white p-6">
         <button
-          onClick={() => router.push("/newhome")}
+          onClick={() => router.push("/terminaladmin")}
           className="cursor-pointer bg-[#301852] rounded-xl px-3 py-2 text-white flex items-center justify-center gap-1"
         >
           <svg

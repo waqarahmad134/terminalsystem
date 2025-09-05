@@ -16,7 +16,7 @@ const poppins = Poppins({
 })
 
 export const metadata = {
-  title: "Bigtime Universe",
+  title: "Terminal System",
   description: "Welcome to the Adventure",
 }
 
