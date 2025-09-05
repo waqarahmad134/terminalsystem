@@ -72,7 +72,7 @@ const RevenueDashboard = () => (
   <div className="bg-[#240b48b6] rounded-2xl border border-[#210C43] p-5 ">
     <h2 className="text-2xl font-bold mb-4">Machine Integration</h2>
     <p className="flex items-center justify-center h-full text-3xl py-40">
-      Right Now Machine Integrion IS Not Supported
+      No Machine Available
     </p>
   </div>
 )
