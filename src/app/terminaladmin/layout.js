@@ -93,7 +93,7 @@ export default function AdminLayout({ children }) {
             <Link
               href="#"
               onClick={logOutFunc}
-              className="block py-2 px-4 hover:bg-gray-700 rounded mb-2"
+              className="bg-[#7A59FF] block py-2 px-10 hover:bg-gray-700 rounded mb-2"
             >
               Logout
             </Link>
