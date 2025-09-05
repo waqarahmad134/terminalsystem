@@ -238,8 +238,7 @@ export default function Homes({ params }) {
                 </h1>
                 <p className="opacity-90">
                   By Vegas Casino Studios <span className="mx-1">/</span> <br />{" "}
-                  Maturity: 18+ <span className="mx-1">•</span> Develop by Big
-                  Time Universe
+                  Maturity: 18+ <span className="mx-1">•</span> Develop by Terminal System Online
                 </p>
               </div>
 

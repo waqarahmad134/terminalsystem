@@ -36,7 +36,7 @@ export default function AdminLayout({ children }) {
             href="/home"
             className="inline-block px-4 py-2 mb-4 w-full text-white bg-[#4c2d80] rounded hover:bg-[#5d37a2] transition"
           >
-            Visit Big Time Universe
+            Visit Terminal System Online
           </Link> */}
           <h2 className="text-xl font-bold mb-6">Admin Panel</h2>
           <nav>
