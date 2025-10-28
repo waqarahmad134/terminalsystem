@@ -20,12 +20,13 @@
 }
 
 body {
-  background: var(--background);
+  /* background: var(--background); */
+  /* background: linear-gradient(113.33deg, #000000 3.35%, #151b30 100.43%); */
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-poppins), sans-serif;
 }
 
-button{
+button {
   cursor: pointer;
 }
 
@@ -38,6 +39,10 @@ button{
   font-family: var(--font-poppins);
 }
 
+.font-playfair-display-sc {
+  font-family: var(--font-playfair-display-sc);
+}
+
 .theme-inner-shadow {
   box-shadow: 4px 1px 39px -16px rgba(0, 0, 0, 0.94) inset;
   -webkit-box-shadow: 4px 1px 39px -16px rgba(0, 0, 0, 0.94) inset;
@@ -48,6 +53,6 @@ button{
   display: none;
 }
 .scrollbar-hide {
-  -ms-overflow-style: none; 
+  -ms-overflow-style: none;
   scrollbar-width: none;
 }
