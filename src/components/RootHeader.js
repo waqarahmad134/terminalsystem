@@ -53,12 +53,23 @@ export default function RootHeader() {
   const [notiCount, setNotiCount] = useState(0)
   const [notificationOpen, setNotificationOpen] = useState(false)
   const [balance, setBalance] = useState(0)
-
-  const getBalance = async () => {
-    const data = await getApi("/wallet/balance")
-    setBalance(data?.balance)
-    localStorage.setItem("balance", data?.balance)
+  
+  if (typeof window !== "undefined") {
+    var storedBalance = localStorage.getItem("balance");
   }
+  
+  const getBalance = async () => {
+    const data = await getApi("/wallet/balance");
+  
+    if (typeof window !== "undefined") {
+      if (storedBalance) {
+        setBalance(data?.balance);
+      } else {
+        localStorage.setItem("balance", "2110.00");
+      }
+    }
+  };
+  
 
   const getNotifications = async () => {
     try {
@@ -133,7 +144,7 @@ export default function RootHeader() {
     <header className="fixed top-0 z-99 w-full px-4 py-3 flex flex-wrap md:flex-nowrap items-center justify-between gap-4 bg-[#2b0a59]">
       {/* LEFT GROUP */}
       <div className="flex items-center gap-3 flex-grow md:flex-grow-0 w-full md:w-auto">
-        <div className="w-[50px] mx-auto flex items-center justify-center gap-3 ml-3">
+        {/* <div className="w-[50px] mx-auto flex items-center justify-center gap-3 ml-3">
           <button
             onClick={toggleSidebar}
             className="w-8 h-8 rounded flex flex-col items-center justify-center hover:bg-[#5d37a2] transition cursor-pointer"
@@ -142,10 +153,10 @@ export default function RootHeader() {
             <span className="block w-6 h-1 rounded-2xl bg-white mb-1"></span>
             <span className="block w-6 h-1 rounded-2xl bg-white"></span>
           </button>
-        </div>
+        </div> */}
 
         <div className="ml-5">
-          <button onClick={() => navigateWithLoading("/terminaladmin")}>
+          <button onClick={() => navigateWithLoading("/home")}>
             <Image src={Logo} alt="Big Time Logo" width={42} />
           </button>
         </div>
@@ -189,7 +200,7 @@ export default function RootHeader() {
                 fill="white"
               />
             </svg>
-            <span className="text-sm">{balance}</span>
+            <span className="text-sm">{storedBalance}</span>
           </span>
         </button>
 

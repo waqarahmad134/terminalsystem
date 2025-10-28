@@ -192,14 +192,11 @@ export default function RootSidebar() {
                   }`}
                 >
                   <Icon />
-                  {/* <Icon size={20} /> */}
                   <span className="text-sm">{name}</span>
                 </button>
               ))}
             </nav>
-            {/* <Discount />
-            <FriendsOnline />
-            <RecentlyPlayed /> */}
+          
           </aside>
         </div>
       ) : (

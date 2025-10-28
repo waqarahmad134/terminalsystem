@@ -12,7 +12,7 @@ import google from "@/assets/Images/google.png";
 import facebook from "@/assets/Images/facebook.png";
 import Logo from "@/assets/Images/Logo.png";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://167.71.255.240:8000';
 
 export default function LoginPage() {
   const router = useRouter();

@@ -13,11 +13,9 @@ export default function LayoutContent({ children }) {
     <>
       <RootHeader />
       <main className={`transition-all duration-300 flex mt-[64px]`}>
-        <RootSidebar/>
+        {/* <RootSidebar/> */}
         <div
-          className={`relative float-right ml-auto ${
-            isSidebarOpen ? "w-[calc(100%-256px)]" : "w-[calc(100%-80px)]"
-          }`}
+          className='relative w-full'
         >
           <div className="min-h-[calc(100vh-64px)] ">
             <Image

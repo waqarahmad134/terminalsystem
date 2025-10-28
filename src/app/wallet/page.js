@@ -9,6 +9,7 @@ import { ChevronDown, FilterIcon, RefreshCcw, ArrowDown } from "lucide-react"
 import { getApi, postApi } from "@/lib/apiClient"
 
 import toast from "react-hot-toast"
+import { useRouter } from "next/router"
 
 const purchaseOptions = [
   { tokens: 11000, bonus: 1800, price: 99.99 },
@@ -111,15 +112,22 @@ export default function TokenWalletPage() {
 
   const handleExternalTransfer = async () => {
     const externalGameData =
-      typeof window !== "undefined" ? localStorage.getItem("externalGameData") : null
+      typeof window !== "undefined"
+        ? localStorage.getItem("externalGameData")
+        : null
     // if (!externalGameData) {
     //   alert("Please Connect Casino First")
     //   return
     // }
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/add-user-token")
+      const res = await fetch("https://localhost/api/add-user-token")
       const data = await res.json()
-      console.log("🚀 ~ handleExternalTransfer ~ data:", data)
+      let balance = localStorage.getItem("balance")
+      balance = parseFloat(balance) || 0
+      balance -= 89
+      localStorage.setItem("balance", balance)
+      window.location.reload()
+
       toast("Tokens transferred successfully!")
     } catch (err) {
       console.error("Transfer failed:", err)
@@ -178,7 +186,7 @@ export default function TokenWalletPage() {
     userProfileApi()
   }, [])
 
-  const mainTabs = ["Token Operations", "Games", "Transactions"]
+  const mainTabs = ["Token Operations", "Transactions"]
   const subTabs = ["Add Tokens", "Transfer to User", "Game Transfer"]
 
   return (
@@ -193,11 +201,27 @@ export default function TokenWalletPage() {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="mt-3 mb-5"
+          className="mt-3 mb-5 flex justify-between"
         >
           <h2 className="font-bebas-neue tracking-wide text-5xl">
-             Token Wallet
+            Token Wallet
           </h2>
+          <div
+          >
+
+          <button
+          onClick={() => {
+            const balance = parseFloat(localStorage.getItem('balance')) || 0;
+            const newBalance = balance + 89;
+            localStorage.setItem('balance', newBalance);
+            window.location.reload();
+          }}
+          className="flex-1 px-4 py-2 rounded-md transition-colors duration-200 cursor-pointer bg-[#7A59FF] text-white"
+        >
+          Refresh
+        </button>
+          </div>
+
         </motion.div>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -234,9 +258,7 @@ export default function TokenWalletPage() {
               </div>
             </div>
             <div className="text-center col-span-3 rounded-xl border border-[#818CF8] px-10 py-3">
-              <div className="text-lg font-semibold text-gray-300">
-                 Balance
-              </div>
+              <div className="text-lg font-semibold text-gray-300">Balance</div>
 
               <div className="text-4xl font-bold text-[#FFB800]">{balance}</div>
             </div>
@@ -307,10 +329,10 @@ export default function TokenWalletPage() {
                     className="border border-[#52388E] rounded-2xl p-4"
                   >
                     <div className="text-center mb-6">
-                      <h2 className="text-2xl font-bold">Add  Tokens</h2>
+                      <h2 className="text-2xl font-bold">Add Tokens</h2>
                       <p className="text-lg">
-                        Purchase  to use in marketplace or transfer to games
-                        or friends
+                        Purchase to use in marketplace or transfer to games or
+                        friends
                       </p>
                     </div>
                     {/* Input and Next Button */}
@@ -406,7 +428,7 @@ export default function TokenWalletPage() {
                     <div className="mb-6">
                       <h2 className="text-2xl font-bold">Transfer to User</h2>
                       <p className="text-lg">
-                        Send  to another user on the platform.
+                        Send to another user on the platform.
                       </p>
                     </div>
 
@@ -485,7 +507,7 @@ export default function TokenWalletPage() {
                         Transfer to Casino (First connect )
                       </h2>
                       <p className="text-lg">
-                        Add  tokens to your casino account.
+                        Add tokens to your casino account.
                       </p>
                     </div>
 

@@ -167,9 +167,9 @@ export default function TokenWalletPage() {
   }
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      setBalance(localStorage.getItem("balance") || "0")
-    }
+    // if (typeof window !== "undefined") {
+    //   setBalance(localStorage.getItem("balance") || "0")
+    // }
     getFriends()
     userProfileApi()
   }, [])
