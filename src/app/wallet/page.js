@@ -124,7 +124,7 @@ export default function TokenWalletPage() {
       const data = await res.json()
       let balance = localStorage.getItem("balance")
       balance = parseFloat(balance) || 0
-      balance -= 89
+      balance -= 100
       localStorage.setItem("balance", balance)
       window.location.reload()
 
@@ -187,7 +187,7 @@ export default function TokenWalletPage() {
   }, [])
 
   const mainTabs = ["Token Operations", "Transactions"]
-  const subTabs = ["Add Tokens", "Transfer to User", "Game Transfer"]
+  const subTabs = ["Add Tokens", "Game Transfer"]
 
   return (
     <motion.div
@@ -212,7 +212,7 @@ export default function TokenWalletPage() {
           <button
           onClick={() => {
             const balance = parseFloat(localStorage.getItem('balance')) || 0;
-            const newBalance = balance + 89;
+            const newBalance = balance + 50;
             localStorage.setItem('balance', newBalance);
             window.location.reload();
           }}

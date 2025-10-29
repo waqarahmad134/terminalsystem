@@ -30,7 +30,7 @@ export default function LoginPage() {
     const rememberedEmail = localStorage.getItem("rememberedEmail");
 
     if (token) {
-      router.push("/terminaladmin");
+      router.push("/home");
     }
 
     if (rememberedEmail) {
