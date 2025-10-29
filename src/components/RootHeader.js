@@ -140,11 +140,11 @@ export default function RootHeader() {
     }
   }
 
-  return (
+  // return (
     <header className="fixed top-0 z-99 w-full px-4 py-3 flex flex-wrap md:flex-nowrap items-center justify-between gap-4 bg-[#2b0a59]">
       {/* LEFT GROUP */}
       <div className="flex items-center gap-3 flex-grow md:flex-grow-0 w-full md:w-auto">
-        {/* <div className="w-[50px] mx-auto flex items-center justify-center gap-3 ml-3">
+        <div className="w-[50px] mx-auto flex items-center justify-center gap-3 ml-3">
           <button
             onClick={toggleSidebar}
             className="w-8 h-8 rounded flex flex-col items-center justify-center hover:bg-[#5d37a2] transition cursor-pointer"
@@ -153,7 +153,7 @@ export default function RootHeader() {
             <span className="block w-6 h-1 rounded-2xl bg-white mb-1"></span>
             <span className="block w-6 h-1 rounded-2xl bg-white"></span>
           </button>
-        </div> */}
+        </div>
 
         <div className="ml-5">
           <button onClick={() => navigateWithLoading("/home")}>
@@ -276,5 +276,5 @@ export default function RootHeader() {
         </button>
       </div>
     </header>
-  )
+  // )
 }

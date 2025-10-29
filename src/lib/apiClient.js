@@ -39,7 +39,7 @@ export const getApi = async (endpoint, params = {}, customHeaders = {}) => {
       localStorage.removeItem("accessToken")
       localStorage.removeItem("refreshToken")
       localStorage.removeItem("role")
-      window.location.href = "/login"
+      // window.location.href = "/login"
     }
     error.detail = json?.detail;
     throw error;
