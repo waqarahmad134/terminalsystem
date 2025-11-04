@@ -87,6 +87,14 @@ export default function TokenWalletPage() {
   const [activeMainTab, setActiveMainTab] = useState("Token Operations")
   const [activeSubTab, setActiveSubTab] = useState("Add Tokens")
   const [balance, setBalance] = useState("0")
+  
+  // OTP and Transfer to Casino state
+  const [otp, setOtp] = useState("")
+  const [otpVerified, setOtpVerified] = useState(false)
+  const [otpLoading, setOtpLoading] = useState(false)
+  const [otpError, setOtpError] = useState("")
+  const [otpData, setOtpData] = useState(null)
+  const [casinoAmount, setCasinoAmount] = useState("")
 
   const handleTransfer = async () => {
     if (!recipient || !amount) {
@@ -131,6 +139,124 @@ export default function TokenWalletPage() {
       toast("Tokens transferred successfully!")
     } catch (err) {
       console.error("Transfer failed:", err)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleOtpVerification = async () => {
+    if (!otp) {
+      setOtpError("Please enter an OTP code")
+      return
+    }
+    
+    try {
+      setOtpLoading(true)
+      setOtpError("")
+      
+      const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null
+      
+      const response = await fetch(`${API_BASE_URL}/wallet/external/lookup-otp/?otp=${otp}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      const data = await response.json()
+      
+      if (response.ok && data.success) {
+        setOtpVerified(true)
+        setOtpData(data)
+        toast("OTP verified successfully!")
+        // Auto-fill the amount if specified in OTP
+        if (data.amount && data.amount_pre_specified) {
+          setCasinoAmount(data.amount.toString())
+        } else if (data.amount === null && !data.amount_pre_specified) {
+          // Clear amount if not pre-specified
+          setCasinoAmount("")
+        }
+      } else {
+        setOtpError(data.detail || data.external_error?.error || "Invalid OTP")
+        setOtpVerified(false)
+      }
+    } catch (err) {
+      console.error("OTP verification failed:", err)
+      setOtpError("Failed to verify OTP. Please try again.")
+      setOtpVerified(false)
+    } finally {
+      setOtpLoading(false)
+    }
+  }
+
+  const handleRedeemTokens = async () => {
+    // Check balance first
+    const currentBalance = parseFloat(balance) || 0
+    const amountToTransfer = parseFloat(casinoAmount) || 0
+    
+    if (!otpVerified || !otpData) {
+      toast("Please verify OTP first", { icon: "❌" })
+      return
+    }
+
+    // Check if amount is valid
+    if (!casinoAmount || amountToTransfer <= 0) {
+      toast("Please enter a valid amount", { icon: "❌" })
+      return
+    }
+
+    // Check balance
+    if (amountToTransfer > currentBalance) {
+      toast("Insufficient balance", { icon: "❌" })
+      return
+    }
+
+    try {
+      setLoading(true)
+      const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null
+      
+      // Prepare request body based on whether amount is pre-specified
+      const requestBody = {
+        one_time_password: otp,
+      }
+
+      // Add amount only if not pre-specified
+      if (!otpData.amount_pre_specified) {
+        requestBody.number_of_tokens = amountToTransfer
+      }
+
+      const response = await fetch(`${API_BASE_URL}/wallet/external/redeem-tokens/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(requestBody),
+      })
+
+      const data = await response.json()
+
+      if (response.ok && data.success) {
+        toast("Tokens transferred successfully!", { icon: "✅" })
+        
+        // Update balance
+        const newBalance = currentBalance - amountToTransfer
+        localStorage.setItem("balance", newBalance.toString())
+        setBalance(newBalance.toString())
+        
+        // Reset form
+        setOtp("")
+        setOtpVerified(false)
+        setOtpData(null)
+        setCasinoAmount("")
+        setOtpError("")
+      } else {
+        toast(data.detail || data.message || "Transfer failed", { icon: "❌" })
+      }
+    } catch (err) {
+      console.error("Transfer failed:", err)
+      toast("Failed to transfer tokens. Please try again.", { icon: "❌" })
     } finally {
       setLoading(false)
     }
@@ -186,8 +312,25 @@ export default function TokenWalletPage() {
     userProfileApi()
   }, [])
 
+  // Reset OTP state when switching away from OTP-based tabs
+  useEffect(() => {
+    if (activeSubTab !== "Transfer to Casino" && activeSubTab !== "Receive from Casino") {
+      setOtp("")
+      setOtpVerified(false)
+      setOtpError("")
+      setOtpData(null)
+      setCasinoAmount("")
+    }
+  }, [activeSubTab])
+
   const mainTabs = ["Token Operations", "Transactions"]
-  const subTabs = ["Add Tokens", "Transfer to User", "Game Transfer"]
+  const subTabs = [
+    "Add Tokens",
+    "Transfer to User",
+    "Transfer to Casino",
+    "Receive from Casino",
+    "Game Transfer",
+  ]
 
   return (
     <motion.div
@@ -489,6 +632,276 @@ export default function TokenWalletPage() {
                         }`}
                       >
                         {loading ? "Processing..." : "Transfer Tokens"}
+                      </motion.button>
+                    </div>
+                  </motion.div>
+                )}
+
+                {activeSubTab === "Transfer to Casino" && (
+                  <motion.div
+                    key="transfer-casino"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="border border-[#52388E] rounded-2xl p-4"
+                  >
+                    <div className="mb-6">
+                      <h2 className="text-2xl font-bold">Transfer to Casino</h2>
+                      <p className="text-lg">
+                        Add tokens to your casino account for betting and gaming.
+                      </p>
+                    </div>
+
+                    <div className="space-y-5">
+                      {/* OTP Verification Section */}
+                      <motion.div variants={itemVariants}>
+                        <label className="block text-base text-gray-200 mt-5 mb-2">
+                          Enter OTP
+                        </label>
+                        <div className="relative flex gap-2">
+                          <input
+                            id="otp_input"
+                            type="text"
+                            placeholder="Enter OTP code"
+                            value={otp}
+                            onChange={(e) => {
+                              setOtp(e.target.value)
+                              setOtpError("")
+                            }}
+                            disabled={otpVerified}
+                            className={`flex-1 appearance-none p-3 py-3 text-white rounded-lg border focus:outline-none focus:ring-2 ${
+                              otpVerified
+                                ? "border-[#059669] bg-[#1a0d2e] cursor-not-allowed opacity-70"
+                                : "border-[#52388E] focus:ring-[#7A59FF] bg-[#1a0d2e]"
+                            }`}
+                          />
+                          <motion.button
+                            whileHover={{ scale: otpVerified ? 1 : 1.05 }}
+                            whileTap={{ scale: otpVerified ? 1 : 0.95 }}
+                            onClick={handleOtpVerification}
+                            disabled={otpLoading || otpVerified}
+                            className={`px-6 py-3 rounded-lg font-semibold transition-colors duration-200 ${
+                              otpLoading || otpVerified
+                                ? "bg-gray-500 cursor-not-allowed"
+                                : "bg-[#7A59FF] hover:bg-[#6c4fe0] cursor-pointer"
+                            }`}
+                          >
+                            {otpLoading ? "Checking..." : otpVerified ? "✓ Verified" : "Check"}
+                          </motion.button>
+                        </div>
+                        {otpError && (
+                          <motion.p
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className="text-red-400 text-sm mt-2"
+                          >
+                            {otpError}
+                          </motion.p>
+                        )}
+                        {otpVerified && otpData && (
+                          <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className="bg-green-900/20 border border-green-500 rounded-lg p-3 mt-2"
+                          >
+                            <p className="text-green-400 text-sm">
+                              OTP verified! {otpData.amount_pre_specified ? `Amount: ${otpData.amount} tokens` : otpData.message}
+                            </p>
+                          </motion.div>
+                        )}
+                      </motion.div>
+
+                      {/* Amount - greyed out until OTP is verified or if amount is pre-specified */}
+                      <motion.div variants={itemVariants}>
+                        <label className="block text-base text-gray-200 mt-5 mb-2">
+                          Amount ()
+                        </label>
+                        <div className="relative">
+                          <input
+                            id="transfer_amount_casino"
+                            type="number"
+                            placeholder="Enter amount to transfer"
+                            required
+                            value={casinoAmount}
+                            onChange={(e) => setCasinoAmount(e.target.value)}
+                            disabled={!otpVerified || (otpData?.amount_pre_specified === true)}
+                            className={`appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none p-3 w-full py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#7A59FF] ${
+                              !otpVerified || otpData?.amount_pre_specified === true
+                                ? "bg-gray-700 text-gray-400 cursor-not-allowed border-gray-600"
+                                : "text-white border-[#52388E] bg-[#1a0d2e]"
+                            }`}
+                          />
+                        </div>
+                        {!otpVerified && (
+                          <p className="text-gray-400 text-sm mt-2">
+                            Please verify OTP first to enable this field
+                          </p>
+                        )}
+                        {otpVerified && otpData?.amount_pre_specified === true && (
+                          <p className="text-blue-400 text-sm mt-2">
+                            Amount is pre-specified and cannot be changed
+                          </p>
+                        )}
+                      </motion.div>
+                    </div>
+                    <div className="text-center mt-8">
+                      <motion.button
+                        whileHover={{ scale: (otpVerified && casinoAmount && !loading) ? 1.05 : 1 }}
+                        whileTap={{ scale: (otpVerified && casinoAmount && !loading) ? 0.95 : 1 }}
+                        disabled={!otpVerified || !casinoAmount || loading}
+                        onClick={handleRedeemTokens}
+                        className={`w-full px-6 py-3 font-semibold rounded-md transition-colors duration-200 ${
+                          !otpVerified || !casinoAmount || loading
+                            ? "bg-gray-500 cursor-not-allowed"
+                            : "bg-[#7A59FF] hover:bg-[#6c4fe0] cursor-pointer"
+                        }`}
+                      >
+                        {loading ? "Processing..." : "Transfer to Casino"}
+                      </motion.button>
+                    </div>
+                  </motion.div>
+                )}
+
+                {activeSubTab === "Receive from Casino" && (
+                  <motion.div
+                    key="receive-casino"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="border border-[#52388E] rounded-2xl p-4"
+                  >
+                    <div className="mb-6">
+                      <h2 className="text-2xl font-bold">Receive from Casino</h2>
+                      <p className="text-lg">Add tokens from your casino account via OTP.</p>
+                    </div>
+
+                    <div className="space-y-5">
+                      {/* OTP Verification Section */}
+                      <motion.div variants={itemVariants}>
+                        <label className="block text-base text-gray-200 mt-5 mb-2">
+                          Enter OTP
+                        </label>
+                        <div className="relative flex gap-2">
+                          <input
+                            id="otp_input_receive"
+                            type="text"
+                            placeholder="Enter OTP code"
+                            value={otp}
+                            onChange={(e) => {
+                              setOtp(e.target.value)
+                              setOtpError("")
+                            }}
+                            disabled={otpVerified}
+                            className={`flex-1 appearance-none p-3 py-3 text-white rounded-lg border focus:outline-none focus:ring-2 ${
+                              otpVerified
+                                ? "border-[#059669] bg-[#1a0d2e] cursor-not-allowed opacity-70"
+                                : "border-[#52388E] focus:ring-[#7A59FF] bg-[#1a0d2e]"
+                            }`}
+                          />
+                          <motion.button
+                            whileHover={{ scale: otpVerified ? 1 : 1.05 }}
+                            whileTap={{ scale: otpVerified ? 1 : 0.95 }}
+                            onClick={handleOtpVerification}
+                            disabled={otpLoading || otpVerified}
+                            className={`px-6 py-3 rounded-lg font-semibold transition-colors duration-200 ${
+                              otpLoading || otpVerified
+                                ? "bg-gray-500 cursor-not-allowed"
+                                : "bg-[#7A59FF] hover:bg-[#6c4fe0] cursor-pointer"
+                            }`}
+                          >
+                            {otpLoading ? "Checking..." : otpVerified ? "✓ Verified" : "Check"}
+                          </motion.button>
+                        </div>
+                        {otpError && (
+                          <motion.p
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className="text-red-400 text-sm mt-2"
+                          >
+                            {otpError}
+                          </motion.p>
+                        )}
+                        {otpVerified && otpData && (
+                          <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className="bg-green-900/20 border border-green-500 rounded-lg p-3 mt-2"
+                          >
+                            <p className="text-green-400 text-sm">
+                              OTP verified! {otpData.amount_pre_specified ? `Amount: ${otpData.amount} tokens` : otpData.message}
+                            </p>
+                          </motion.div>
+                        )}
+                      </motion.div>
+
+                      {/* Amount - read-only and not editable for Receive */}
+                      <motion.div variants={itemVariants}>
+                        <label className="block text-base text-gray-200 mt-5 mb-2">
+                          Amount ()
+                        </label>
+                        <div className="relative">
+                          <input
+                            id="receive_amount_casino"
+                            type="number"
+                            placeholder="Amount will be set by OTP"
+                            value={otpData?.amount ?? ""}
+                            readOnly
+                            disabled
+                            className="appearance-none p-3 w-full py-3 rounded-lg border bg-gray-700 text-gray-400 border-gray-600"
+                          />
+                        </div>
+                        <p className="text-gray-400 text-sm mt-2">
+                          Amount is determined by the casino OTP and cannot be edited.
+                        </p>
+                      </motion.div>
+                    </div>
+                    <div className="text-center mt-8">
+                      <motion.button
+                        whileHover={{ scale: (otpVerified && !loading) ? 1.05 : 1 }}
+                        whileTap={{ scale: (otpVerified && !loading) ? 0.95 : 1 }}
+                        disabled={!otpVerified || loading}
+                        onClick={async () => {
+                          try {
+                            setLoading(true)
+                            const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null
+                            const response = await fetch(`${API_BASE_URL}/wallet/external/add-tokens/`, {
+                              method: "POST",
+                              headers: {
+                                "Content-Type": "application/json",
+                                Authorization: `Bearer ${token}`,
+                              },
+                              body: JSON.stringify({ one_time_password: otp }),
+                            })
+                            const data = await response.json()
+                            if (response.ok && data.success) {
+                              const currentBalance = parseFloat(balance) || 0
+                              const tokensAdded = parseFloat(data.tokens_added) || (parseFloat(otpData?.amount) || 0)
+                              const newBalance = currentBalance + tokensAdded
+                              localStorage.setItem("balance", newBalance.toString())
+                              setBalance(newBalance.toString())
+                              toast("Tokens received successfully!", { icon: "✅" })
+                              setOtp("")
+                              setOtpVerified(false)
+                              setOtpError("")
+                              setOtpData(null)
+                              setCasinoAmount("")
+                            } else {
+                              toast(data.detail || data.message || "Failed to add tokens", { icon: "❌" })
+                            }
+                          } catch (err) {
+                            console.error("Add tokens failed:", err)
+                            toast("Failed to add tokens. Please try again.", { icon: "❌" })
+                          } finally {
+                            setLoading(false)
+                          }
+                        }}
+                        className={`w-full px-6 py-3 font-semibold rounded-md transition-colors duration-200 ${
+                          !otpVerified || loading
+                            ? "bg-gray-500 cursor-not-allowed"
+                            : "bg-[#7A59FF] hover:bg-[#6c4fe0] cursor-pointer"
+                        }`}
+                      >
+                        {loading ? "Processing..." : "Receive Tokens"}
                       </motion.button>
                     </div>
                   </motion.div>
